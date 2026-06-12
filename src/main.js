@@ -2,9 +2,10 @@
 // The shared theme is imported ONCE here so its tokens + utility classes are
 // global for the shell and every puzzle (STYLE_GUIDE.md §8). Don't import it elsewhere.
 import './styles/theme.css';
+import { mount } from 'svelte';
 import App from './App.svelte';
 
-const app = new App({
+const app = mount(App, {
   target: document.getElementById('app'),
 });
 

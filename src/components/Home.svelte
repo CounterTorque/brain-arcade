@@ -1,18 +1,12 @@
 <script>
-  // The intro / "today's set" screen (DESIGN.md §5). Shows what's queued for today and
-  // starts the session. Reads the registry + scheduler to preview the day's puzzles.
-  import { createEventDispatcher } from 'svelte';
+  let { dailySet, onstart } = $props();
 
-  export let dailySet;   // { date, seed, puzzles: [{ manifest, seed }, ...] } from the scheduler
-
-  const dispatch = createEventDispatcher();
-
-  $: hasPuzzles = dailySet.puzzles.length > 0;
-  $: today = dailySet.date.toLocaleDateString(undefined, {
+  let hasPuzzles = $derived(dailySet.puzzles.length > 0);
+  let today = $derived(dailySet.date.toLocaleDateString(undefined, {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
-  });
+  }));
 </script>
 
 <main class="home">
@@ -30,7 +24,7 @@
           </li>
         {/each}
       </ol>
-      <button class="btn primary" on:click={() => dispatch('start')}>Start →</button>
+      <button class="btn primary" onclick={() => onstart()}>Start →</button>
     </div>
   {:else}
     <div class="surface card pop-in">
