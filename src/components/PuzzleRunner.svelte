@@ -1,30 +1,23 @@
 <script>
-  // Runs ONE puzzle: lazily mounts it, owns the countdown, and collects its score.
-  // The puzzle stays "dumb" about timing/navigation (DESIGN.md §4.2) — it just plays and reports.
-  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { onDestroy, untrack } from 'svelte';
   import { writable } from 'svelte/store';
 
-  export let manifest;   // one registry entry: { id, name, estSeconds, component, ... }
-  export let seed;       // this puzzle's deterministic seed for today (from the scheduler)
+  let { manifest, seed, oncomplete } = $props();
 
-  const dispatch = createEventDispatcher();
-
-  const estSeconds = manifest.estSeconds ?? 60;
-  // Shared countdown store the puzzle may display; the shell enforces the limit regardless.
-  const timeLeft = writable(estSeconds);
+  // manifest never changes per instance (parent keys on puzzle id); untrack to suppress
+  // the "captured initial value" lint — this is intentional, not a reactivity bug.
+  const { estSeconds: estSecondsRaw = 60, id: manifestId, component: loadComponent } = untrack(() => manifest);
+  const timeLeft = writable(estSecondsRaw);
 
   let latestScore = 0;
   let finished = false;
   let intervalId = null;
 
-  // Lazy-load the puzzle component (keeps each puzzle out of the initial bundle),
-  // and start the clock once it's ready — never before the puzzle can play.
-  const componentPromise = manifest.component().then((m) => {
+  const componentPromise = loadComponent().then((m) => {
     startTimer();
     return m.default;
   });
 
-  // ── The contract callbacks handed to the puzzle ──────────────────────
   function reportScore(value) {
     latestScore = Number(value) || 0;
   }
@@ -33,13 +26,11 @@
     finish();
   }
 
-  // Idempotent: both the puzzle's own reportComplete and the timer expiry route here,
-  // but the session only ever advances once.
   function finish() {
     if (finished) return;
     finished = true;
     stopTimer();
-    dispatch('complete', { puzzleId: manifest.id, score: latestScore });
+    oncomplete({ puzzleId: manifestId, score: latestScore });
   }
 
   function startTimer() {
@@ -48,7 +39,7 @@
       timeLeft.update((t) => {
         const next = t - 1;
         if (next <= 0) {
-          finish(); // enforce the time limit even if the puzzle never completes
+          finish();
           return 0;
         }
         return next;
@@ -76,8 +67,7 @@
     {#await componentPromise}
       <p class="loading">Loading puzzle…</p>
     {:then Puzzle}
-      <svelte:component
-        this={Puzzle}
+      <Puzzle
         {seed}
         {reportScore}
         {reportComplete}

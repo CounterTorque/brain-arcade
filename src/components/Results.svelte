@@ -1,21 +1,16 @@
 <script>
-  // End-of-session results (DESIGN.md §5): per-puzzle scores, the composite Brain Score,
-  // and the player's trend over time from the score store.
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import { brainScore } from '../lib/brainScore.js';
   import { scoreStore } from '../lib/scoreStore.js';
 
-  export let results;   // [{ puzzleId, name, score }] for today's session
+  let { results, onhome } = $props();
 
-  const dispatch = createEventDispatcher();
+  let todayScore = $derived(brainScore(results));
 
-  $: todayScore = brainScore(results);
-
-  let trend = [];   // [{ dayKey, score }] — daily Brain Score history, oldest → newest
+  let trend = $state([]);
 
   onMount(async () => {
     const history = await scoreStore.getHistory();
-    // Group all stored results by day, then compute each day's Brain Score.
     const byDay = new Map();
     for (const r of history) {
       if (!byDay.has(r.dayKey)) byDay.set(r.dayKey, []);
@@ -26,17 +21,18 @@
       .sort((a, b) => a.dayKey - b.dayKey);
   });
 
-  // Build an SVG polyline for the sparkline (normalized to a 0–1000 scale).
   const W = 280, H = 60, PAD = 6;
-  $: points = trend.length
-    ? trend
-        .map((d, i) => {
-          const x = trend.length === 1 ? W / 2 : PAD + (i * (W - 2 * PAD)) / (trend.length - 1);
-          const y = H - PAD - (Math.min(d.score, 1000) / 1000) * (H - 2 * PAD);
-          return `${x.toFixed(1)},${y.toFixed(1)}`;
-        })
-        .join(' ')
-    : '';
+  let points = $derived(
+    trend.length
+      ? trend
+          .map((d, i) => {
+            const x = trend.length === 1 ? W / 2 : PAD + (i * (W - 2 * PAD)) / (trend.length - 1);
+            const y = H - PAD - (Math.min(d.score, 1000) / 1000) * (H - 2 * PAD);
+            return `${x.toFixed(1)},${y.toFixed(1)}`;
+          })
+          .join(' ')
+      : ''
+  );
 </script>
 
 <main class="results">
@@ -72,7 +68,7 @@
     </div>
   {/if}
 
-  <button class="btn primary" on:click={() => dispatch('home')}>Back home</button>
+  <button class="btn primary" onclick={() => onhome()}>Back home</button>
 </main>
 
 <style>

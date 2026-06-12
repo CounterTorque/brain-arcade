@@ -2,27 +2,20 @@
   // ── The puzzle contract ──────────────────────────────────────────────
   // The shell passes these props in. You generally only need `seed`,
   // `reportScore`, and `reportComplete`.
-  export let seed;             // number — deterministic seed for TODAY. Use it for all challenge randomness.
-  export let reportScore;      // (value:number) => void — higher is better, aim for ~0–1000
-  export let reportComplete;   // () => void — call once when the player is finished
-  export let timeLeft = null;  // optional Svelte readable store with the shared countdown
+  let { seed, reportScore, reportComplete, timeLeft = null } = $props();
 
   import { makeRng } from '../../lib/seededRandom.js';
 
-  // Deterministic randomness: same seed → same puzzle for everyone today.
-  // NEVER use bare Math.random() for anything that defines the day's challenge.
   const rng = makeRng(seed);
 
-  // ── Example state — replace with your own puzzle ─────────────────────
-  // This stub picks a target number and asks the player to type it back.
-  const target = 1 + Math.floor(rng() * 9);   // 1–9, seeded
-  let guess = '';
-  let done = false;
+  const target = 1 + Math.floor(rng() * 9);
+  let guess = $state('');
+  let done = $state(false);
 
   function submit() {
     if (done) return;
     done = true;
-    const score = (Number(guess) === target) ? 1000 : 0;  // your scoring formula goes here
+    const score = (Number(guess) === target) ? 1000 : 0;
     reportScore(score);
     reportComplete();
   }
@@ -41,7 +34,7 @@
   {/if}
 
   <input class="well" type="number" bind:value={guess} disabled={done} />
-  <button class="btn primary" on:click={submit} disabled={done}>Submit</button>
+  <button class="btn primary" onclick={submit} disabled={done}>Submit</button>
 </div>
 
 <style>
