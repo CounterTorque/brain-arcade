@@ -1,0 +1,21 @@
+{
+  "name": "brain-arcade",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --no-tsconfig",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "jsdom": "^25.0.1",
+    "svelte": "^4.2.19",
+    "svelte-check": "^4.6.0",
+    "vite": "^5.4.10",
+    "vitest": "^4.1.8"
+  }
+}
