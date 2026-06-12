@@ -137,8 +137,8 @@ Open a pull request — **one puzzle per PR**. We review and merge as a group.
 >
 > Build the puzzle **[describe your puzzle here — e.g. "Head Count: flash N objects on screen briefly,
 > hide them, ask the player to type how many there were, over 4 rounds"]**. Keep all logic and assets
-> inside this one component/folder. Don't modify any shared/shell files. Use Svelte 4 single-file
-> component syntax. At the end, call `reportScore` with my computed score and then `reportComplete`.
+> inside this one component/folder. Don't modify any shared/shell files. Use Svelte 5 single-file
+> component syntax (runes: `$props()`, `$state()`, `$derived()`). At the end, call `reportScore` with my computed score and then `reportComplete`.
 >
 > Style it with the app's shared theme, which is already loaded globally. Use only its CSS custom
 > properties — colors `--red --orange --yellow --green --blue --purple`, surfaces `--surface
