@@ -26,6 +26,7 @@ This serves the AI Leadership Framework goals directly: hands-on practice with A
 - **Real creative depth.** Each puzzle is a whole mini-game the author owns end to end — not a cosmetic tweak.
 - **Mixed-skill friendly.** Approachable for non-developers leaning on AI tools, with room for stronger coders to show off.
 - **Clean, reviewable PRs.** Adding a puzzle is "add a folder + one registry line," so every pull request is small and easy to review and merge together.
+- **One visual family.** A shared theme (design tokens in `src/styles/theme.css`, principles in STYLE_GUIDE.md) keeps every puzzle feeling like the same game while leaving gameplay and identity to its author.
 
 ---
 
@@ -210,6 +211,7 @@ brain-arcade/
   README.md                  ← what this is + quickstart
   DESIGN.md                  ← this document
   AUTHOR_GUIDE.md            ← how to build & submit a puzzle (+ AI prompt)
+  STYLE_GUIDE.md             ← shared look & feel (palette, type, shape, motion)
   FEATURES.md                ← the puzzle assignments
   package.json
   vite.config.js
@@ -222,6 +224,8 @@ brain-arcade/
       seededRandom.js        ← deterministic PRNG
       scoreStore.js          ← ScoreStore interface + localStorage impl
       brainScore.js          ← composite-score calculation
+    styles/
+      theme.css              ← shared design tokens & utility classes (imported once in main.js)
     puzzles/
       registry.js            ← the one shared file (one line per puzzle)
       _template/             ← copy this to start a new puzzle
@@ -241,7 +245,7 @@ brain-arcade/
 ## 10. Core-team setup checklist (before handing puzzles out)
 
 1. Create the repo, drop in this bundle, run `npm create vite@latest` with the Svelte template and reconcile the layout in §9.
-2. Implement the shell: `scheduler.js`, `seededRandom.js`, `scoreStore.js` (localStorage), `brainScore.js`, and `App.svelte` (menu → session → results).
+2. Implement the shell: `scheduler.js`, `seededRandom.js`, `scoreStore.js` (localStorage), `brainScore.js`, and `App.svelte` (menu → session → results). Import `styles/theme.css` once in `main.js` so the shared tokens are global.
 3. Ship the `triangle-math` example puzzle as the reference implementation authors copy.
 4. Create `_template/` from the example, stripped to a minimal working stub.
 5. Turn on branch protection + PR review on `main`.

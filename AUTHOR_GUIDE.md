@@ -63,6 +63,14 @@ const rng = makeRng(seed);     // rng() → float in [0,1), like Math.random but
 const count = 5 + Math.floor(rng() * 6);   // 5–10 objects, same for everyone today
 ```
 
+#### Styling: use the shared theme
+The shell loads `src/styles/theme.css` globally — design tokens (palette, radii, shadows, easings)
+and ready-made classes (`.surface`, `.btn`, `.well`, `.pop-in`, `.celebrate`, `.shake`) are already
+available in your component. Style your puzzle's own pieces in your scoped `<style>` block **using
+the tokens** (`var(--blue)`, `var(--radius-pill)`, `var(--ease-bounce)`), never hard-coded values.
+**STYLE_GUIDE.md** explains the look: light neumorphic, pill shapes, big rounded type, bouncy
+squash-and-stretch feedback. Green = correct, red = wrong, everywhere.
+
 #### Scoring convention
 Aim for roughly **0–1000**, higher is better, so your puzzle weighs fairly in the daily Brain Score composite.
 A simple pattern: `score = correct * basePoints + speedBonus`. Document your formula in the README.
@@ -108,6 +116,7 @@ Open a pull request — **one puzzle per PR**. We review and merge as a group.
 - [ ] You call `reportScore(value)` then `reportComplete()`.
 - [ ] Score is roughly 0–1000, higher is better.
 - [ ] Plays within `estSeconds`; no console errors.
+- [ ] Styled with the shared theme tokens/classes (see STYLE_GUIDE.md) — no hard-coded colors, fonts, or shadows.
 - [ ] One import + one entry added to `registry.js`.
 - [ ] README written.
 
@@ -130,6 +139,16 @@ Open a pull request — **one puzzle per PR**. We review and merge as a group.
 > hide them, ask the player to type how many there were, over 4 rounds"]**. Keep all logic and assets
 > inside this one component/folder. Don't modify any shared/shell files. Use Svelte 4 single-file
 > component syntax. At the end, call `reportScore` with my computed score and then `reportComplete`.
+>
+> Style it with the app's shared theme, which is already loaded globally. Use only its CSS custom
+> properties — colors `--red --orange --yellow --green --blue --purple`, surfaces `--surface
+> --surface-raised`, text `--ink --ink-soft`, shadows `--shadow-out --shadow-in`, radii `--radius
+> --radius-pill`, font `--font-display`, easing `--ease-bounce`, durations `--snap --move` — plus the
+> global classes `.surface`, `.btn`, `.well`, `.pop-in`, `.celebrate`, `.shake`. The look is light-mode
+> neumorphic: soft extruded panels, pill-shaped buttons, big rounded type, vibrant saturated accents.
+> Interactions must give snappy feedback: buttons squash when pressed, correct answers flash green
+> with a bouncy pop, wrong answers shake red. No hard-coded hex colors, no borders, no serif or thin
+> fonts, no dark backgrounds.
 >
 > Also generate a short README.md describing how it plays and the scoring formula.
 

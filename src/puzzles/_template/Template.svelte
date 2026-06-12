@@ -28,23 +28,28 @@
   }
 </script>
 
-<!-- ── Your puzzle UI — replace everything below ──────────────────────── -->
-<div class="puzzle">
+<!-- ── Your puzzle UI — replace everything below ────────────────────────
+     The shared theme (src/styles/theme.css) is loaded globally by the shell:
+     use its tokens (var(--blue), var(--radius-pill), …) and classes
+     (.surface, .btn, .well, .pop-in, .celebrate, .shake). See STYLE_GUIDE.md. -->
+<div class="puzzle surface pop-in">
   <h2>Template Puzzle</h2>
-  <p>Type the number <strong>{target}</strong> and submit. (Replace this with your real puzzle.)</p>
+  <p>Type the number <strong class="prompt">{target}</strong> and submit. (Replace this with your real puzzle.)</p>
 
   {#if timeLeft}
-    <p class="timer">Time left: {$timeLeft}s</p>
+    <p class="timer numeric">Time left: {$timeLeft}s</p>
   {/if}
 
-  <input type="number" bind:value={guess} disabled={done} />
-  <button on:click={submit} disabled={done}>Submit</button>
+  <input class="well" type="number" bind:value={guess} disabled={done} />
+  <button class="btn primary" on:click={submit} disabled={done}>Submit</button>
 </div>
 
 <style>
-  /* Keep styles scoped to your component. */
-  .puzzle { text-align: center; padding: 1.5rem; }
-  .timer { color: #888; font-variant-numeric: tabular-nums; }
-  input { font-size: 1.25rem; padding: 0.4rem; width: 6rem; text-align: center; }
-  button { font-size: 1rem; padding: 0.5rem 1rem; margin-left: 0.5rem; cursor: pointer; }
+  /* Keep styles scoped to your component, written with the shared tokens —
+     no hard-coded colors, fonts, or shadows. */
+  .puzzle { text-align: center; max-width: 28rem; margin: 0 auto; }
+  .prompt { color: var(--blue); font-size: var(--text-xl); }
+  .timer { color: var(--ink-soft); }
+  input { font-size: var(--text-lg); width: 6rem; }
+  button { margin-left: var(--space-1); }
 </style>

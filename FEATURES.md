@@ -16,6 +16,7 @@ difficulty, must satisfy the **shared acceptance criteria** plus its own.
 - [ ] Uses the `seed` prop so today's instance is **identical for every teammate** on the same date.
 - [ ] Calls `reportScore(value)` then `reportComplete()` when the player finishes.
 - [ ] Playable within its declared `estSeconds`; no console errors.
+- [ ] Styled with the shared theme tokens (STYLE_GUIDE.md / `src/styles/theme.css`); clear interactables with snappy green-correct/red-wrong feedback.
 - [ ] Short `README.md` describing how it plays and how scoring works.
 
 > **Scoring convention:** higher score = better. Aim for a roughly 0–1000 range per puzzle so the

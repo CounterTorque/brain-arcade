@@ -13,5 +13,6 @@ Higher is better."
 
 ## Notes
 - Confirms it uses `seed` (via `makeRng`) so today's instance is the same for everyone.
+- Styled with the shared theme tokens (see STYLE_GUIDE.md); no hard-coded colors/fonts.
 - Any assets (images/sounds) live in this folder.
 - Anything reviewers should know.
