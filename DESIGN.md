@@ -1,6 +1,6 @@
 # Brain Arcade — Design Document
 
-> A team-built, Brain Age–style daily puzzle game. The core team builds the shell;
+> A team-built daily brain-training puzzle game. The core team builds the shell;
 > each team member builds one self-contained puzzle as a feature, using AI coding tools,
 > on their own branch, reviewed and merged together.
 
@@ -11,7 +11,7 @@
 
 ## 1. The idea in one paragraph
 
-Every day, the team plays the **same short set of puzzles** — a 3–4 minute "daily session" reminiscent of *Brain Age*. Each puzzle is a small, self-contained brain teaser (Triangle Math, Head Count, Sign Match, and so on). The point isn't just the game: the team **builds** the game together. The core framework — the shell that runs the daily session, times each puzzle, collects scores, and shows results — is provided. Then ~10 puzzles are defined as independent features and assigned to team members, who each build theirs on a branch with the help of AI coding tools. We review each puzzle together and merge it. Playing takes under 5 minutes a day; building your puzzle is a real, demoable "that's cool, I made that" contribution.
+Every day, the team plays the **same short set of puzzles** — a 3–4 minute "daily session" in the spirit of classic brain-training games. Each puzzle is a small, self-contained brain teaser (Triangle Math, Head Count, Sign Match, and so on). The point isn't just the game: the team **builds** the game together. The core framework — the shell that runs the daily session, times each puzzle, collects scores, and shows results — is provided. Then a dozen-plus puzzles are defined as independent features and assigned to team members, who each build theirs on a branch with the help of AI coding tools. We review each puzzle together and merge it. Playing takes under 5 minutes a day; building your puzzle is a real, demoable "that's cool, I made that" contribution.
 
 This serves the AI Leadership Framework goals directly: hands-on practice with AI coding tools, a real git/PR workflow, and a low-stakes shared artifact the whole team owns.
 
@@ -31,7 +31,7 @@ This serves the AI Leadership Framework goals directly: hands-on practice with A
 
 ## 3. Architecture: a shell + a puzzle registry
 
-The whole design rests on one decision: **the core is an engine that puzzles plug into, not a thing puzzles edit.** Authors add to a registry; they never modify shared game logic. This is what makes "10 independent ambitious features" actually work, and it models a genuinely good engineering habit (extension over modification).
+The whole design rests on one decision: **the core is an engine that puzzles plug into, not a thing puzzles edit.** Authors add to a registry; they never modify shared game logic. This is what makes "a dozen independent ambitious features" actually work, and it models a genuinely good engineering habit (extension over modification).
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -44,7 +44,7 @@ The whole design rests on one decision: **the core is an engine that puzzles plu
 │  • Scoring harness   — collects results via scoreStore     │
 │  • Profile/score store — per-user scores (localStorage v1) │
 │  • Menu / registry   — lists all available puzzles         │
-│  • Brain Age score   — composite of the day's results      │
+│  • Brain Score       — composite of the day's results      │
 └───────────────────────────┬───────────────────────────────┘
                             │  the puzzle contract (see §4)
         ┌───────────────────┼───────────────────┐
@@ -130,14 +130,14 @@ This single shared file is the only place two authors could conflict, and it's a
         ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐
   ──▶   │  Intro   │─▶ │ Puzzle 1 │─▶ │ Puzzle 2 │─▶ │ Puzzle 3 │─▶ │ Results  │
         │ "Today's │   │  ~60s    │   │  ~60s    │   │  ~60s    │   │ + Brain  │
-        │  set"    │   │          │   │          │   │          │   │  Age + 📈│
+        │  set"    │   │          │   │          │   │          │   │ Score+📈 │
         └──────────┘   └──────────┘   └──────────┘   └──────────┘   └──────────┘
                          each reports score → shell collects → composite score
 ```
 
 1. **Daily scheduler** takes today's date, derives a seed, and deterministically picks the day's puzzles (default 3) from the registry. Same date → same puzzles for everyone.
 2. The shell runs each puzzle in turn, passing the day's `seed` and the report callbacks.
-3. After the last puzzle, the **Results** screen shows the day's scores, a composite **Brain Age** number, and the user's trend over time.
+3. After the last puzzle, the **Results** screen shows the day's scores, a composite **Brain Score**, and the user's trend over time.
 4. Total time targets under 5 minutes.
 
 **Seeding:** a small deterministic PRNG seeded from the date (e.g. `YYYYMMDD`). Both *which* puzzles run and *what instance* each generates derive from that seed, so the whole team shares the identical daily challenge with no backend required.
@@ -210,7 +210,7 @@ brain-arcade/
   README.md                  ← what this is + quickstart
   DESIGN.md                  ← this document
   AUTHOR_GUIDE.md            ← how to build & submit a puzzle (+ AI prompt)
-  FEATURES.md                ← the ~10 puzzle assignments
+  FEATURES.md                ← the puzzle assignments
   package.json
   vite.config.js
   index.html
@@ -221,7 +221,7 @@ brain-arcade/
       scheduler.js           ← date → seed → today's puzzle set
       seededRandom.js        ← deterministic PRNG
       scoreStore.js          ← ScoreStore interface + localStorage impl
-      brainAge.js            ← composite-score calculation
+      brainScore.js          ← composite-score calculation
     puzzles/
       registry.js            ← the one shared file (one line per puzzle)
       _template/             ← copy this to start a new puzzle
@@ -241,7 +241,7 @@ brain-arcade/
 ## 10. Core-team setup checklist (before handing puzzles out)
 
 1. Create the repo, drop in this bundle, run `npm create vite@latest` with the Svelte template and reconcile the layout in §9.
-2. Implement the shell: `scheduler.js`, `seededRandom.js`, `scoreStore.js` (localStorage), `brainAge.js`, and `App.svelte` (menu → session → results).
+2. Implement the shell: `scheduler.js`, `seededRandom.js`, `scoreStore.js` (localStorage), `brainScore.js`, and `App.svelte` (menu → session → results).
 3. Ship the `triangle-math` example puzzle as the reference implementation authors copy.
 4. Create `_template/` from the example, stripped to a minimal working stub.
 5. Turn on branch protection + PR review on `main`.
@@ -254,6 +254,6 @@ brain-arcade/
 
 - Auto-discovery registry (`import.meta.glob`) to remove the one shared file.
 - The Supabase/Firebase cloud score store + team leaderboard (listed as an assignment in FEATURES.md).
-- "Brain Age" trend analytics and badges.
+- Brain Score trend analytics and badges.
 - Let people pitch and add their *own* puzzle ideas — the registry makes this trivial and is itself motivating.
 - Accessibility pass (color-blind palettes, keyboard play, reduced-motion).

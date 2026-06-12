@@ -64,7 +64,7 @@ const count = 5 + Math.floor(rng() * 6);   // 5–10 objects, same for everyone 
 ```
 
 #### Scoring convention
-Aim for roughly **0–1000**, higher is better, so your puzzle weighs fairly in the Brain Age composite.
+Aim for roughly **0–1000**, higher is better, so your puzzle weighs fairly in the daily Brain Score composite.
 A simple pattern: `score = correct * basePoints + speedBonus`. Document your formula in the README.
 
 ### 5. Register (the one shared line)

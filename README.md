@@ -1,6 +1,6 @@
 # Brain Arcade 🧠🕹️
 
-A team-built, *Brain Age*–style daily puzzle game. Everyone plays the same short set of puzzles each
+A team-built daily brain-training puzzle game. Everyone plays the same short set of puzzles each
 day (3–4 minutes), and **the whole team builds the game together** — the core team builds the shell,
 and each member builds one self-contained puzzle as a feature, with AI coding tools, on a branch we
 review and merge as a group.
@@ -10,7 +10,7 @@ Built with **Svelte + Vite**. Hosts free on **GitHub Pages**; scores start in th
 
 ## Docs
 - **[DESIGN.md](DESIGN.md)** — the full design: architecture, puzzle contract, daily flow, scoring, hosting, git workflow.
-- **[FEATURES.md](FEATURES.md)** — the ~10 puzzle assignments with acceptance criteria.
+- **[FEATURES.md](FEATURES.md)** — the puzzle assignments with acceptance criteria.
 - **[AUTHOR_GUIDE.md](AUTHOR_GUIDE.md)** — how to build and submit your puzzle (includes an AI-tool prompt).
 
 ## What's in this starting bundle
