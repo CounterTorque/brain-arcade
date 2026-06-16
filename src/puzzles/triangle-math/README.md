@@ -1,18 +1,31 @@
-# <Your Puzzle Name>
+# Triangle Math
 
-**Puzzle ID:** `<your-puzzle-id>`
-**Difficulty:** easy | medium | hard
-**Est. play time:** ~XX seconds
+**Puzzle ID:** `triangle-math`
+**Difficulty:** easy
+**Est. play time:** ~50 seconds
 
 ## How it plays
-One short paragraph describing what the player sees and does.
+
+Each round shows **three numbers** across the top row with **operators** (+/−) between them. The player chains the arithmetic downward through a triangle:
+
+1. **Row 2** — apply each operator to its pair of adjacent numbers (left pair → left blank, right pair → right blank).
+2. **Row 3** — apply the operator between the two Row 2 results to get the final answer.
+
+Fill all three blanks and hit **Submit** (or press Enter). Correct answers flash green with a bouncy pop; wrong ones shake red. After brief feedback the next round loads automatically. There are **5 rounds** total.
 
 ## Scoring
-Describe your formula, e.g. "score = correct answers × 100 + speed bonus (up to 200), capped at 1000.
-Higher is better."
+
+| Factor | Formula |
+|--------|---------|
+| Correct round | All 3 blanks right = 1 point |
+| Score | `(correctRounds / 5) × 1000` |
+| **Max** | **1 000** (all 5 rounds perfect) |
+
+Accuracy only — speed is not factored in.
 
 ## Notes
-- Confirms it uses `seed` (via `makeRng`) so today's instance is the same for everyone.
+
+- Uses `seed` via `makeRng` so today's instance is identical for every player.
+- Numbers are 1–9; operators are randomly + or −. Answers can be negative.
 - Styled with the shared theme tokens (see STYLE_GUIDE.md); no hard-coded colors/fonts.
-- Any assets (images/sounds) live in this folder.
-- Anything reviewers should know.
+- All logic is self-contained in this folder — no shared files modified.

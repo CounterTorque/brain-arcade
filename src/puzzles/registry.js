@@ -3,10 +3,10 @@
 //
 // Keep the array roughly alphabetical by id to minimize merge conflicts.
 
-// import triangleMath from './triangle-math/index.js';   // (core-team reference example)
+import triangleMath from './triangle-math/index.js';
 // import headCount    from './head-count/index.js';
 
 export const puzzles = [
-  // triangleMath,
+  triangleMath,
   // headCount,
 ];
